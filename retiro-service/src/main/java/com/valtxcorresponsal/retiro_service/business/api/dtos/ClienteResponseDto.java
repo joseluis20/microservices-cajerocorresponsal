@@ -1,0 +1,21 @@
+package com.valtxcorresponsal.retiro_service.business.api.dtos;
+
+import lombok.Builder;
+
+@Builder
+public record ClienteResponseDto(
+
+
+        Long tipDocCli,
+
+        String nroDocument,
+
+        String firstName,
+
+        String lastName,
+
+        String email,
+
+        String phoneNumber
+) {
+}
