@@ -1,6 +1,6 @@
 spring:
   application:
-    name: autenticacion-service
+    name: deposito-service
   profiles:
     active: dev
 
@@ -15,6 +15,5 @@ springdoc:
     operationsSorter: alpha
 
 token:
-  expire: 3600000  # 1 hora
   signing:
     key: R2FsYXh5VHJhaW5pbmdPbk1vZGVGdWxsU3RhY2syMDI1

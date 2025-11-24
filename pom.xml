@@ -15,6 +15,7 @@
         <module>cliente-service</module>
         <module>deposito-service</module>
         <module>retiro-service</module>
+        <module>pago-prestamo-service</module>
         <module>seguridad-service</module>
     </modules>
 

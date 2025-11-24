@@ -37,14 +37,14 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
 
+    @Override
     public void actualizarSaldo(String accountNumber, Double nuevoSaldo) {
-        var cuenta = cuentaRepository.findByAccountNumber(accountNumber)
-                .orElseThrow(() -> new RuntimeException("Cuenta no encontrada: " + accountNumber));
+        if (!cuentaRepository.findByAccountNumber(accountNumber).isPresent()) {
+            throw new RuntimeException("Cuenta no encontrada: " + accountNumber);
+        }
 
-        cuenta.setBalance(nuevoSaldo);
-        cuentaRepository.save(cuenta);
+        cuentaRepository.updateBalance(accountNumber, nuevoSaldo);
     }
-
 
 
 

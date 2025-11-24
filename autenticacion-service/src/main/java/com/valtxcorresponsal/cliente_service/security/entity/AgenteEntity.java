@@ -22,10 +22,10 @@ public class AgenteEntity {
     @Column(name="age_id")
     private Long ageId;
 
-    @Column(name="age_tip_per")
+    @Column(name="age_tipper")
     private Integer ageTipPerso;
 
-    @Column(name="age_tip_doc")
+    @Column(name="age_tipdoc")
     private Integer ageTipDoc;
 
     @Column(name="age_nom")
@@ -35,38 +35,27 @@ public class AgenteEntity {
    // @Enumerated(EnumType.STRING)
    // private TypeDocument ageTipDoc;
 
-    @Column(name = "age_ape_pat")
+    @Column(name = "age_apepat")
     private String ageApePat;
 
-    @Column(name = "age_ape_mat")
+    @Column(name = "age_apemat")
     private String ageApeMat;
 
    // @Column(name = "Age_SalAge")
    // private Double ageSalAge;
 
-    @Column(name = "age_dire")
+    @Column(name = "age_dir")
     private String address;
 
-    @Column(name = "age_nro_cel")
+    @Column(name = "age_cel1")
     private String ageCel;
 
-    @Column(name="age_sal_age")
+    @Column(name="age_salage")
     private Double ageSaldo;
 
-    @Column(name = "age_est_age")
+    @Column(name = "age_esteval")
     private Integer active;
 
-    @Column(name = "age_usr_crea")
-    private String userCreated;
 
-    @Column(name = "age_usr_act")
-    private String userUpdated;
-
-
-    @Column(name = "age_fec_crea")
-    private LocalDateTime createdAt;
-
-    @Column(name = "age_fec_act")
-    private LocalDateTime updatedAt;
 
 }

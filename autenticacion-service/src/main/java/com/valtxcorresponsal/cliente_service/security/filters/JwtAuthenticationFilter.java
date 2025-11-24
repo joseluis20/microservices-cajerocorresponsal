@@ -38,11 +38,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		log.info("doFilterInternal...");
 
 		log.info("url context: {}", request.getContextPath());
-
+/*
 		if (request.getContextPath().contains("/api/v1/auth")) {
 			filterChain.doFilter(request, response);
 			return;
 		}
+*/
+        if (request.getRequestURI().contains("/api/v1/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
 		final String authHeader = request.getHeader("Authorization");
 		final String jwt;

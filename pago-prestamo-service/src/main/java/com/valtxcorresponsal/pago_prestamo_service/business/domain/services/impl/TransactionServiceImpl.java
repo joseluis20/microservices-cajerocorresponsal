@@ -1,16 +1,17 @@
-    package com.valtxcorresponsal.retiro_service.business.domain.services.impl;
+    package com.valtxcorresponsal.pago_prestamo_service.business.domain.services.impl;
 
-    import com.valtxcorresponsal.retiro_service.business.api.dtos.*;
-    import com.valtxcorresponsal.retiro_service.business.consume.AuthenticationServiceClient;
-    import com.valtxcorresponsal.retiro_service.business.consume.ClienteServiceClient;
+
+    import com.valtxcorresponsal.pago_prestamo_service.business.api.dtos.*;
+    import com.valtxcorresponsal.pago_prestamo_service.business.consume.AgenteServiceClient;
+    import com.valtxcorresponsal.pago_prestamo_service.business.consume.ClienteServiceClient;
     import lombok.AllArgsConstructor;
     import lombok.extern.slf4j.Slf4j;
     import org.springframework.http.ResponseEntity;
     import org.springframework.stereotype.Service;
-    import com.valtxcorresponsal.retiro_service.business.data.model.entities.TransactionEntity;
-    import com.valtxcorresponsal.retiro_service.business.data.repositories.TransactionRepository;
-    import com.valtxcorresponsal.retiro_service.business.domain.mappers.TransactionMapper;
-    import com.valtxcorresponsal.retiro_service.business.domain.services.TransactionService;
+    import com.valtxcorresponsal.pago_prestamo_service.business.data.model.entities.TransactionEntity;
+    import com.valtxcorresponsal.pago_prestamo_service.business.data.repositories.TransactionRepository;
+    import com.valtxcorresponsal.pago_prestamo_service.business.domain.mappers.TransactionMapper;
+    import com.valtxcorresponsal.pago_prestamo_service.business.domain.services.TransactionService;
 
     import java.time.LocalDateTime;
     import java.util.List;
@@ -23,12 +24,12 @@
 
         private final TransactionRepository transactionRepository;
         private final TransactionMapper transactionMapper;
-        private final AuthenticationServiceClient authenticationServiceClient;
         private final ClienteServiceClient clienteServiceClient;
+        private final AgenteServiceClient agenteServiceClient;
 
         @Override
         public TransactionResponseDto createTransaction(TransactionRequestDto transactionDto) {
-            log.info(" Iniciando retiro para cliente: {}", transactionDto.nroDocCli());
+            log.info(" Iniciando deposito para cliente: {}", transactionDto.nroDocCli());
 
             // 1️ Buscar cliente remoto
             var clienteRequest = new ClienteRequestDto(transactionDto.tipDocCli(), transactionDto.nroDocCli());
@@ -41,7 +42,6 @@
 
             // 2️ Crear request de cuentas con token incluido
             var cuentaRequest = new CuentaRequestDto(
-                    transactionDto.token(),
                     transactionDto.tipDocCli(),
                     transactionDto.nroDocCli()
             );
@@ -50,7 +50,9 @@
             ResponseEntity<MessageCuentaResponseDto> cuentasResponse = clienteServiceClient.getAccountsByClient(cuentaRequest);
             MessageCuentaResponseDto body = cuentasResponse.getBody();
 
-           
+            if (body == null) {
+                throw new RuntimeException("Token incorrecto o expirado");
+            }
 
             if (body.results() == null || body.results().isEmpty()) {
                 throw new RuntimeException("No se encontraron cuentas para el cliente");
@@ -58,24 +60,19 @@
 
             List<CuentaResponseDto> cuentas = body.results();
 
-            // 4️ Buscar la cuenta origen
+            // 4️ Buscar la cuenta destino
             CuentaResponseDto cuenta = cuentas.stream()
-                    .filter(c -> c.accountNumber().equals(transactionDto.cuentaOrigen()))
+                    .filter(c -> c.accountNumber().equals(transactionDto.cuentaDestino()))
                     .findFirst()
-                    .orElseThrow(() -> new RuntimeException("Cuenta no válida o no encontrada: " + transactionDto.cuentaOrigen()));
+                    .orElseThrow(() -> new RuntimeException("Cuenta no válida o no encontrada: " + transactionDto.cuentaDestino()));
 
-            // 5️ Validar saldo
-            if (cuenta.balance() < transactionDto.amount()) {
-                throw new RuntimeException("Saldo insuficiente para realizar el retiro");
-            }
-
-            double nuevoSaldo = cuenta.balance() - transactionDto.amount();
+            double nuevoSaldo = cuenta.balance() + transactionDto.amount();
 
             // 6️ Actualizar saldo remoto del cliente (cliente-service)
             clienteServiceClient.updateSaldoCuenta(cuenta.accountNumber(), nuevoSaldo);
 
-            // 7️ Actualizar saldo remoto  del agente
-            authenticationServiceClient.aumentarSaldo(transactionDto.agenteId(),
+            // 7️ Actualizar saldo remoto del agente
+            agenteServiceClient.descontarSaldo(transactionDto.agenteId(),
                     transactionDto.amount());
 
             // 8️ Generar número de operación único
@@ -90,10 +87,10 @@
             transaction.setCodAgente(transactionDto.agenteId());
             transaction.setTipDocCli(transactionDto.tipDocCli());
             transaction.setNroDocCli(transactionDto.nroDocCli());
-            transaction.setTipoOperacion("RETIRO");
+            transaction.setTipoOperacion("DEPOSITO");
             transaction.setOperationNumber(numOperacion);
             transaction.setFecTransaccion(LocalDateTime.now());
-            transaction.setCuentaOrigen(transactionDto.cuentaOrigen());
+            transaction.setCuentaDestino(transactionDto.cuentaDestino());
 
             TransactionEntity saved = transactionRepository.save(transaction);
 

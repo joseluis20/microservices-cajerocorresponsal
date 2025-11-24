@@ -10,4 +10,5 @@ public interface AgenteRepository extends JpaRepository<AgenteEntity, Long> {
  //   AgenteEntity saveAgente(Integer businessId, AgenteEntity shopAgent);
  Optional<AgenteEntity> findByAgeId(Long ageId);
 
+
 }
