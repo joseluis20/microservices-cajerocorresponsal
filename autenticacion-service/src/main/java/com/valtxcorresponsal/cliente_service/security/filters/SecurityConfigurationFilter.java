@@ -50,7 +50,7 @@ public class SecurityConfigurationFilter {
                     "/swagger-ui/**",
                     "/api/docs/**")
                 .permitAll()
-                .anyRequest().authenticated())
+                .anyRequest().permitAll())
         .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
         .authenticationProvider(authenticationProvider())
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

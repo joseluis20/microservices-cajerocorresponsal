@@ -43,8 +43,8 @@ public class ClientEntity {
     @Column(name = "cli_usr_crea")
     private String userCreated;
 
-    @Column(name = "user_updated")
-    private String cli_usr_act;
+    @Column(name = "cli_usr_act")
+    private String userActivo;
 
     @Column(name = "cli_term_crea")
     private String terminalCreated;

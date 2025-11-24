@@ -4,6 +4,7 @@ import com.valtxcorresponsal.cliente_service.security.dto.LoginRequestDto;
 import com.valtxcorresponsal.cliente_service.security.dto.LoginResponseDto;
 import com.valtxcorresponsal.cliente_service.security.entity.AgenteEntity;
 import com.valtxcorresponsal.cliente_service.security.repository.AgenteRepository;
+import com.valtxcorresponsal.cliente_service.security.repository.UserRepository;
 import com.valtxcorresponsal.cliente_service.security.service.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
   private final AgenteRepository agenteRepository;
 
+  private final UserRepository userRepository;
+
   @Override
   public LoginResponseDto login(LoginRequestDto loginRequestDTO) {
 
@@ -51,7 +54,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     // registrar sesion exitosa
 
-    Optional<AgenteEntity> agente=agenteRepository.findByAgeId(loginRequestDTO.codAgente());
+    Long codAgente= userRepository.findCodAgenteByUserName(loginRequestDTO.userName());
+
+    Optional<AgenteEntity> agente=agenteRepository.findByAgeId(codAgente);
 
     return new LoginResponseDto(token,agente.get().getAgeNom(),agente.get().getAgeApePat(),agente.get().getAgeApeMat(),agente.get().getAgeSaldo());
   }
