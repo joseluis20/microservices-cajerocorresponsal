@@ -1,5 +1,10 @@
 package com.valtxcorresponsal.cliente_service.business.domain.services.impl;
 
+import com.valtxcorresponsal.cliente_service.business.api.dtos.transaction.UserRequestDto;
+import com.valtxcorresponsal.cliente_service.business.api.dtos.transaction.UserResponseDto;
+import com.valtxcorresponsal.cliente_service.business.consume.AuthenticationServiceClient;
+import com.valtxcorresponsal.cliente_service.business.data.model.entities.AccountEntity;
+import com.valtxcorresponsal.cliente_service.business.data.model.entities.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +23,7 @@ public class CuentaServiceImpl implements CuentaService {
 
   private final CuentaRepository cuentaRepository;
   private final CuentaMapper cuentaMapper;
+  private final AuthenticationServiceClient authenticationServiceClient;
 
 
   @Override
@@ -47,5 +53,22 @@ public class CuentaServiceImpl implements CuentaService {
     }
 
 
+
+    @Override
+    public UserEntity findUserEntityByUsername(String username) {
+        UserRequestDto request = new UserRequestDto();
+        request.setUsername(username);
+
+        UserResponseDto response = authenticationServiceClient.getUsuarioByUsername(request);
+
+        UserEntity user = new UserEntity();
+        user.setUserName(response.getUserName());
+        return user;
+    }
+
+    @Override
+    public Iterable<AccountEntity> getAccountsByNroDocument(String nroDocument) {
+        return this.cuentaRepository.getAccountsByClient_NroDocument(nroDocument);
+    }
 
 }

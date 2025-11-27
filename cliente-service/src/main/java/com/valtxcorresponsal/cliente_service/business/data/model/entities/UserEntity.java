@@ -1,4 +1,4 @@
-package com.valtxcorresponsal.cliente_service.security.entity;
+package com.valtxcorresponsal.cliente_service.business.data.model.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -28,7 +28,7 @@ public class UserEntity {
 	private String rol;
 
     @Column(name = "per_est")
-    private String estado;
+    private Integer estado;
 
     @Column(name = "per_est_act")
     private LocalDateTime fecActiva;

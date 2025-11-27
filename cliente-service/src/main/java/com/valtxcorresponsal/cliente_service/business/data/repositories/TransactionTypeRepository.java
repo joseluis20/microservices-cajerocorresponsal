@@ -1,16 +1,12 @@
-package com.valtx.corresponsal_backend.domain.port;
+package com.valtxcorresponsal.cliente_service.business.data.repositories;
 
-import com.valtx.corresponsal_backend.domain.model.TransactionType;
+import com.valtxcorresponsal.cliente_service.business.data.model.entities.ClientEntity;
+import com.valtxcorresponsal.cliente_service.business.data.model.entities.TransactionTypeEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface TransactionTypeRepository {
+public interface TransactionTypeRepository extends JpaRepository<TransactionTypeEntity, Long> {
 
-    // Para mostrar todos los tipos de transaccion
-    Iterable<TransactionType> getTransactionsType();
-    // Para mostrar un tipo de transaccion buscando por id
-    Optional<TransactionType> getTransactionType(Long id);
-    // Para guardar un tipo de transaccion
-    TransactionType saveTransactionType(TransactionType transactionType);
 
 }

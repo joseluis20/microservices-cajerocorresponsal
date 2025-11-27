@@ -1,4 +1,4 @@
-package com.valtx.corresponsal_backend.infrastructure.rest.dto.transactionsdtos;
+package com.valtxcorresponsal.cliente_service.business.api.dtos.transaction;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransactionDTOj {
+public class TransactionDTO {
     private String message;
     private Long idTransaction;
     private String transactionType;

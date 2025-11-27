@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public interface CuentaRepository extends JpaRepository<AccountEntity, Long> {
 
-    // Para buscar un cliente por nroDocument
     List<AccountEntity> getAccountsByClient_NroDocument(String nroDocument);
 
     Optional<AccountEntity> findByAccountNumber(String accountNumber);

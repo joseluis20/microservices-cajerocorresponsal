@@ -1,26 +1,15 @@
-package com.valtx.corresponsal_backend.domain.port;
+package com.valtxcorresponsal.cliente_service.business.data.repositories;
 
-import com.valtx.corresponsal_backend.domain.model.Wallet;
+import com.valtxcorresponsal.cliente_service.business.data.model.entities.AccountEntity;
+import com.valtxcorresponsal.cliente_service.business.data.model.entities.WalletEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface WalletRepository {
+public interface WalletRepository extends JpaRepository<WalletEntity, Long> {
 
-    // Para mostrar todas las billeteras
-    Iterable<Wallet> getWallets();
-    // Para mostrar una billetera buscandola por id
-    Optional<Wallet> getWallet (Long id);
-    // Para guardar una billetera
-    Wallet saveWallet (Wallet wallet);
-    // Para eliminar una billetera indicando el id de la misma
-    void deleteWalletById(Long id);
+     // Para buscar una billetera indicando el propietario de la misma
+    Optional<WalletEntity> findByUser_IdPerfil(Long userId);
 
-    // Para guardar una billetera indicando quien sera propietario de la misma
-    Wallet saveWalletByUser(Long userId, Wallet wallet);
-    // Para buscar una billetera indicando el propietario de la misma
-    Optional<Wallet> getWalletByUser(Long userId);
-
-    //
-    Optional<Wallet> getWalletByUserNull(Long userId);
 
 }

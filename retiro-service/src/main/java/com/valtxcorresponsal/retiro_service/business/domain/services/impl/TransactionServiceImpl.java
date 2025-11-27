@@ -85,7 +85,7 @@
                 numOperacion = 10_000_000L + random.nextInt(90_000_000);
             } while (transactionRepository.existsByOperationNumber(numOperacion));
 
-            // 9️ Registrar transacción local
+            // 9️ Registrar transacción
             TransactionEntity transaction = transactionMapper.toEntity(transactionDto);
             transaction.setCodAgente(transactionDto.agenteId());
             transaction.setTipDocCli(transactionDto.tipDocCli());

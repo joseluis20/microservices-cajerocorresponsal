@@ -58,7 +58,21 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     Optional<AgenteEntity> agente=agenteRepository.findByAgeId(codAgente);
 
-    return new LoginResponseDto(token,agente.get().getAgeNom(),agente.get().getAgeApePat(),agente.get().getAgeApeMat(),agente.get().getAgeSaldo());
+    return new LoginResponseDto(token,
+            agente.get().getAgeId(),
+            loginRequestDTO.userName(),
+            agente.get().getAgeNom(),
+            agente.get().getAgeApePat(),
+            agente.get().getAgeApeMat(),
+            agente.get().getAgeSaldo(),
+            agente.get().getAgeNomAge(),
+            agente.get().getAgeCel(),
+            agente.get().getAgeCel2(),
+            agente.get().getAgeTelf(),
+            agente.get().getAgeTelf2(),
+            agente.get().getAgeCor()
+             )
+            ;
   }
 
     @Override
