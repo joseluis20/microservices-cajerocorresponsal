@@ -225,10 +225,10 @@ public class CuentaResource {
     }
 
 
-
+    /* INTENTO CON HISTORIAL DE ESTADOS DE TRANSACCIONES */
     @Operation(description = "Para enviar el token al cliente. En transactionTypeId indicar 1 para retiro, 2 para depósito, 3 para pago de servicios o 5 para transferencia a terceros")
     @PostMapping("/client/send_token/his/{nroDocument}/{transactionTypeId}")
-    public ResponseEntity<TransactionDTO> sendTokenWhitHis(@RequestHeader("Authorization") String authHeader, @PathVariable(value = "nroDocument") String nroDocument, @PathVariable(value = "transactionTypeId") Long transactionTypeId){
+    public ResponseEntity<TransactionDTOj> sendTokenWhitHis(@RequestHeader("Authorization") String authHeader, @PathVariable(value = "nroDocument") String nroDocument, @PathVariable(value = "transactionTypeId") Long transactionTypeId){
 
         /* VALIDACION CON EL PAYLOAD DEL JWT */
         // Obtener el jwt
@@ -279,11 +279,11 @@ public class CuentaResource {
 
         /* INICIAR LA TRANSACCION */
         //Buscar tipo de transaccion
-        TransactionEntity transactionType = transactionTypeService.getTransactionType(transactionTypeId);
+        TransactionTypeEntity transactionType = transactionTypeService.getTransactionType(transactionTypeId);
         //Buscar la wallet
         WalletEntity wallet = walletService.getWalletByUser(user.getIdPerfil()).get();
         //Construir transaction.
-        TransactionTypeEntity transaction = TransactionTypeEntity.builder()
+        TransactionEntity transaction = TransactionEntity.builder()
                 .transactionType(transactionType)
                 .wallet(wallet)
                 .active(false)
@@ -299,7 +299,7 @@ public class CuentaResource {
                 .build();
 
         //Guardar transaction
-        TransactionTypeEntity savedTransaction = transactionService.saveTransaction(transaction);
+        TransactionEntity savedTransaction = transactionService.saveTransaction(transaction);
         //Registrar en la tabla de historial de estados de transacciones
         TransactionStatusHistoryEntity transactionStatusHistory = TransactionStatusHistoryEntity.builder()
                 .transaction(savedTransaction)

@@ -1,18 +1,12 @@
-package com.valtx.corresponsal_backend.application.service;
+package com.valtxcorresponsal.cliente_service.business.domain.services;
 
-import com.valtx.corresponsal_backend.domain.model.TransactionType;
 
-import java.util.Optional;
+import com.valtxcorresponsal.cliente_service.business.data.model.entities.TransactionEntity;
+import com.valtxcorresponsal.cliente_service.business.data.model.entities.TransactionTypeEntity;
 
 public interface TransactionTypeService {
 
-    // Para mostrar todos los tipos de transaccion
-    Iterable<TransactionType> getTransactionsType();
-    // Para mostrar un tipo de transaccion buscando por id
-    TransactionType getTransactionType(Long id);
-    // Para guardar un tipo de transaccion
-    TransactionType saveTransactionType(TransactionType transactionType);
-    // Para eliminar tipo de transaccion buscandolo por id
-    public String deleteTransactionTypeById(Long id);
+    // Para mostrar un tipo de transaccion buscando por id  ---dddddd
+    TransactionTypeEntity getTransactionType(Long id);
 
 }

@@ -10,4 +10,6 @@ public interface ClienteRepository extends JpaRepository<ClientEntity, Long> {
     // Para buscar un cliente por nroDocument
 
     Optional<ClientEntity> findByNroDocument(String nroDocument);
+
+
 }

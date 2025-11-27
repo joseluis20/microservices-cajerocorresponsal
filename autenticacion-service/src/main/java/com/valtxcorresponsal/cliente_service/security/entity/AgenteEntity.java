@@ -41,6 +41,9 @@ public class AgenteEntity {
     @Column(name = "age_apemat")
     private String ageApeMat;
 
+    @Column(name = "age_nomage")
+    private String ageNomAge;
+
    // @Column(name = "Age_SalAge")
    // private Double ageSalAge;
 
@@ -50,8 +53,20 @@ public class AgenteEntity {
     @Column(name = "age_cel1")
     private String ageCel;
 
+    @Column(name = "age_cel2")
+    private String ageCel2;
+
+    @Column(name = "age_telf1")
+    private String ageTelf;
+
+    @Column(name = "age_telf2")
+    private String ageTelf2;
+
     @Column(name="age_salage")
     private Double ageSaldo;
+
+    @Column(name = "age_cor")
+    private String ageCor;
 
     @Column(name = "age_esteval")
     private Integer active;

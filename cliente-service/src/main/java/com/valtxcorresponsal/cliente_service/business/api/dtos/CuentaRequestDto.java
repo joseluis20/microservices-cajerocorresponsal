@@ -6,9 +6,6 @@ package com.valtxcorresponsal.cliente_service.business.api.dtos;
 
 @Builder
     public record CuentaRequestDto(
-
-
-
             String token,
 
             @NotNull(message = "El campo tipDocCli no puede estar vacío")

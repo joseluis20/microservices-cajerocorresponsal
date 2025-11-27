@@ -1,4 +1,4 @@
-package com.valtx.corresponsal_backend.infrastructure.rest.dto.transactionsdtos;
+package com.valtxcorresponsal.cliente_service.business.api.dtos.transaction;
 
 import lombok.*;
 

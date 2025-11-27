@@ -1,5 +1,6 @@
 package com.valtxcorresponsal.cliente_service.business.domain.services.impl;
 
+import com.valtxcorresponsal.cliente_service.business.data.model.entities.ClientEntity;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import java.util.Optional;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class ClienteServiceImpl implements ClienteService {
+public class    ClienteServiceImpl implements ClienteService {
 
   private final ClienteRepository clienteRepository;
   private final ClienteMapper clienteMapper;
@@ -26,6 +27,9 @@ public class ClienteServiceImpl implements ClienteService {
                 .map(clienteMapper::toDto);
     }
 
-
+    @Override
+    public ClientEntity getClientByNroDocument(String nroDocument) {
+        return this.clienteRepository.findByNroDocument(nroDocument).get();
+    }
 
 }

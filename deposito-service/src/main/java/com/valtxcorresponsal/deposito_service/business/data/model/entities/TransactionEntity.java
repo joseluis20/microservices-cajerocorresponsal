@@ -51,9 +51,4 @@ public class TransactionEntity {
     @Column(name = "trn_nro_operacion", unique = true)
     private Long operationNumber;
 
-
-
-
-
-
 }

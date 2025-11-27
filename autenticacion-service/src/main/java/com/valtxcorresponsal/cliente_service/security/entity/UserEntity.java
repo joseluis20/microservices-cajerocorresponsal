@@ -28,7 +28,7 @@ public class UserEntity {
 	private String rol;
 
     @Column(name = "per_est")
-    private String estado;
+    private Integer estado;
 
     @Column(name = "per_est_act")
     private LocalDateTime fecActiva;

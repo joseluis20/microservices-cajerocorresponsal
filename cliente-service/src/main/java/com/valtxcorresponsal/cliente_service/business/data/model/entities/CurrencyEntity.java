@@ -1,10 +1,6 @@
-package com.valtx.corresponsal_backend.domain.model;
+package com.valtxcorresponsal.cliente_service.business.data.model.entities;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -14,7 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Currency {
+public class CurrencyEntity {
 
     private Long id;
 

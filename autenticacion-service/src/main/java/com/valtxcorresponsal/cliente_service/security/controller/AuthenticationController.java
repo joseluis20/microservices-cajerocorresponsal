@@ -2,6 +2,8 @@ package com.valtxcorresponsal.cliente_service.security.controller;
 
 import com.valtxcorresponsal.cliente_service.security.dto.LoginRequestDto;
 import com.valtxcorresponsal.cliente_service.security.dto.LoginResponseDto;
+import com.valtxcorresponsal.cliente_service.security.entity.UserEntity;
+import com.valtxcorresponsal.cliente_service.security.repository.UserRepository;
 import com.valtxcorresponsal.cliente_service.security.service.authentication.AuthenticationService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +23,9 @@ import java.util.Map;
 public class AuthenticationController {
 
   private final AuthenticationService authenticationService;
+  private final UserRepository userRepository;
 
-  @PostMapping("/login")
+    @PostMapping("/login")
   public ResponseEntity<LoginResponseDto> signinHeader(HttpServletResponse response,
                                                        @Validated @RequestBody LoginRequestDto request) {
 
@@ -40,9 +43,16 @@ public class AuthenticationController {
 
     Map<String, Object> resp = new HashMap<>();
     resp.put("token", response.token());
+    resp.put("ageId", response.ageId());
     resp.put("ageNom", response.ageNom());
     resp.put("ageApePat", response.ageApePat());
     resp.put("ageApeMat", response.ageApeMat());
+    resp.put("ageNomAge", response.ageNomAge());
+    resp.put("ageCor", response.ageCor());
+    resp.put("ageTelf", response.ageTelf());
+    resp.put("ageTelf2", response.ageTelf2());
+    resp.put("ageCel", response.ageCel());
+    resp.put("ageCel2", response.ageCel2());
     resp.put("ageSaldo", response.ageSaldo());
 
 
@@ -65,6 +75,13 @@ public class AuthenticationController {
 
         authenticationService.aumentarSaldo(id, monto);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/by-username")
+    public ResponseEntity<UserEntity> getByUsername(@RequestBody Map<String, String> body) {
+        String username = body.get("username");
+        UserEntity user = userRepository.findByUserNameIgnoreCase(username);
+        return ResponseEntity.ok(user);
     }
 
 }
