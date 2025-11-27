@@ -1,19 +1,29 @@
 package com.valtxcorresponsal.cliente_service.business.api.resources;
 
 import com.valtxcorresponsal.cliente_service.business.api.dtos.*;
+import com.valtxcorresponsal.cliente_service.business.api.dtos.transaction.TransactionDTO;
+import com.github.f4b6a3.uuid.UuidCreator;
+import com.valtxcorresponsal.cliente_service.business.api.dtos.transaction.TransactionDTOj;
 import com.valtxcorresponsal.cliente_service.business.api.exceptions.ResourceNotFoundException;
 import com.valtxcorresponsal.cliente_service.business.consume.SeguridadServiceClient;
-import com.valtxcorresponsal.cliente_service.business.domain.services.ClienteService;
+import com.valtxcorresponsal.cliente_service.business.data.model.entities.*;
+import com.valtxcorresponsal.cliente_service.business.domain.services.*;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.valtxcorresponsal.cliente_service.business.domain.services.CuentaService;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.interfaces.DecodedJWT;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 @RestController
@@ -23,8 +33,12 @@ public class CuentaResource {
 
   private final CuentaService cuentaService;
   private final ClienteService clienteService;
+  private final TransactionTypeService transactionTypeService;
+  private final WalletService walletService;
 
   private final SeguridadServiceClient seguridadServiceClient;
+  private final TransactionService transactionService;
+  private final TransactionStatusHistoryService transactionStatusHistoryService;
 
 
     @PostMapping("/cliente")
@@ -208,6 +222,106 @@ public class CuentaResource {
         ResponseEntity<String> response = seguridadServiceClient.enviarToken(tokenRequestEmail);
 
         return response.getBody();
+    }
+
+
+
+    @Operation(description = "Para enviar el token al cliente. En transactionTypeId indicar 1 para retiro, 2 para depósito, 3 para pago de servicios o 5 para transferencia a terceros")
+    @PostMapping("/client/send_token/his/{nroDocument}/{transactionTypeId}")
+    public ResponseEntity<TransactionDTO> sendTokenWhitHis(@RequestHeader("Authorization") String authHeader, @PathVariable(value = "nroDocument") String nroDocument, @PathVariable(value = "transactionTypeId") Long transactionTypeId){
+
+        /* VALIDACION CON EL PAYLOAD DEL JWT */
+        // Obtener el jwt
+        String token = authHeader.replace("Bearer ", "");
+        DecodedJWT decodedJWT = JWT.decode(token);
+        // Obtener el username del payload del jwt
+        String usernameFromJwt = decodedJWT.getSubject();
+        // Obtener al user
+        UserEntity user = cuentaService.findUserEntityByUsername(usernameFromJwt);
+
+        // Validacion de si el usuario esta activo
+        if(user.getEstado()!=1){
+            throw new ResourceNotFoundException("Su usuario está inactivo, no puede realizar operaciones en este momento");
+        }
+
+        //Buscar al cliente por DNI
+        ClientEntity cliente = clienteService.getClientByNroDocument(nroDocument);
+
+        // Validacion de si el cliente esta activo
+        if(!cliente.isActive()){
+            throw new ResourceNotFoundException("El cliente está inhabilitado, no puede realizar operaciones en este momento");
+        }
+
+        // Validacion de que el cliente tenga al menos una cuenta activa. Si todas las cuentas estan inactivas, lanzar mensaje de error
+        Iterable<AccountEntity> accounts = cuentaService.getAccountsByNroDocument(cliente.getNroDocument());
+        List<AccountEntity> accountList = StreamSupport.stream(accounts.spliterator(), false).collect(Collectors.toList());
+
+        boolean atLeastOneActiveAccount = false;
+
+        for(AccountEntity account:accountList){
+            if(account.isActive()){
+                atLeastOneActiveAccount = true;
+                break;
+            }
+        }
+
+        if(!atLeastOneActiveAccount){
+            throw new ResourceNotFoundException("El cliente no tiene cuentas activas");
+        }
+
+        String tokenOwner = cliente.getNroDocument();  // DNI del cliente
+        String email = cliente.getEmail();             // Email del cliente
+
+        TokenRequestEmail tokenRequestEmail = new TokenRequestEmail(tokenOwner, email);
+
+        // Enviar el token por correo, Llamar al microservicio de seguridad a través del cliente Feign
+        ResponseEntity<String> sendTokenResponse = seguridadServiceClient.enviarToken(tokenRequestEmail);
+
+        /* INICIAR LA TRANSACCION */
+        //Buscar tipo de transaccion
+        TransactionEntity transactionType = transactionTypeService.getTransactionType(transactionTypeId);
+        //Buscar la wallet
+        WalletEntity wallet = walletService.getWalletByUser(user.getIdPerfil()).get();
+        //Construir transaction.
+        TransactionTypeEntity transaction = TransactionTypeEntity.builder()
+                .transactionType(transactionType)
+                .wallet(wallet)
+                .active(false)
+
+                .createdAt(LocalDateTime.now())
+                .terminalCreated("Terminal_12345")
+                .userCreated(user.getUserName())
+                //.operationNumber(UUID.randomUUID().toString())
+                .operationNumber(UuidCreator.getTimeOrderedEpoch().toString()) //se usa uuid v7 para el numero de operacion
+                .year(LocalDate.now().getYear())
+                .month(LocalDate.now().getMonthValue())
+                .day(LocalDate.now().getDayOfMonth())
+                .build();
+
+        //Guardar transaction
+        TransactionTypeEntity savedTransaction = transactionService.saveTransaction(transaction);
+        //Registrar en la tabla de historial de estados de transacciones
+        TransactionStatusHistoryEntity transactionStatusHistory = TransactionStatusHistoryEntity.builder()
+                .transaction(savedTransaction)
+                .status("Iniciada")
+                .createdAt(LocalDateTime.now())
+                .build();
+        transactionStatusHistoryService.saveTransactionStatusHistory(transactionStatusHistory);
+
+        // Enviar el token por correo
+        //String sendTokenResponse = sendGridEmailService.enviarTokenPorCorreo(tokenRequestEmail);
+
+        TransactionDTOj transactionDTOj = TransactionDTOj.builder()
+                .message(sendTokenResponse.getBody())
+                .idTransaction(savedTransaction.getId())
+                .transactionType(savedTransaction.getTransactionType().getName())
+                .email(email)
+                .build();
+
+        //return sendGridEmailService.enviarTokenPorCorreo(tokenRequestEmail);
+        return new ResponseEntity<>(transactionDTOj, HttpStatus.CREATED);
+
+
     }
 
 }
