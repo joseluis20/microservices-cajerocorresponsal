@@ -27,6 +27,8 @@ public class CuotaEntity {
 
     @Column(name = "nro_cuota", nullable = false)
     private Integer nroCuota;
+    @Column(name = "nro credito", nullable = false)
+    private String nroCredito;
 
     @Column(name = "saldo", nullable = false)
     private Double saldo;

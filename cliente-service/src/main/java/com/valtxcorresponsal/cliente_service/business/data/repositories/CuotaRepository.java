@@ -12,5 +12,5 @@ public interface CuotaRepository extends JpaRepository<CuotaEntity, Long> {
     List<CuotaEntity> findByNroCredito(String nroCredito);
 
     // Nuevo metodo necesario
-    Optional<CuotaEntity> findByCodPrestAndNroCuota(String codPrest, Integer nroCuota);
+    Optional<CuotaEntity> findByNroCreditoAndNroCuota(String nroCredito, Integer nroCuota);
 }

@@ -18,5 +18,5 @@ public interface CreditoRepository extends JpaRepository<CreditoEntity, Long> {
 
 
     // Para obtener un crédito específico por su código
-    Optional<CreditoEntity> findByCodPrest(String codPrest);
+    //Optional<CreditoEntity> findByCodPrest(String codPrest);
 }
