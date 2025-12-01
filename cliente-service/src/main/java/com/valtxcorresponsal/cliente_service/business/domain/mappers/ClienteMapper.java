@@ -10,13 +10,17 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface ClienteMapper {
 
+    // ENTITY → DTO
+    @Mapping(target = "idClient", source = "id")
     @Mapping(target = "tipDocCli", source = "typeDocument.tipoDocument")
     ClienteResponseDto toDto(ClientEntity clientEntity);
 
-    @Mapping(target = "idClient", ignore = true)
+    // DTO → ENTITY (crear)
+    @Mapping(target = "id", ignore = true)
     ClientEntity toEntity(ClienteRequestDto clienteDto);
 
-    @Mapping(target = "idClient", ignore = true)
+    // DTO → ENTITY (actualizar)
+    @Mapping(target = "id", ignore = true)
     void updateEntityFromDto(ClienteRequestDto clienteDto,
                              @MappingTarget ClientEntity clienteEntity);
 }

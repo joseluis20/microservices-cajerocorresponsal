@@ -1,9 +1,6 @@
 package com.valtxcorresponsal.pago_prestamo_service.business.consume;
 
-import com.valtxcorresponsal.pago_prestamo_service.business.api.dtos.ClienteRequestDto;
-import com.valtxcorresponsal.pago_prestamo_service.business.api.dtos.ClienteResponseDto;
-import com.valtxcorresponsal.pago_prestamo_service.business.api.dtos.CuentaRequestDto;
-import com.valtxcorresponsal.pago_prestamo_service.business.api.dtos.MessageCuentaResponseDto;
+import com.valtxcorresponsal.pago_prestamo_service.business.api.dtos.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +23,15 @@ public interface ClienteServiceClient {
             @PathVariable("accountNumber") String accountNumber,
             @RequestParam("nuevoSaldo") Double nuevoSaldo
     );
+
+
+    @GetMapping("/clientes/creditos/{codPrest}/cuotas/{nroCuota}")
+    ResponseEntity<CuotaResponseDto> obtenerCuota(
+            @PathVariable String codPrest,
+            @PathVariable Integer nroCuota);
+
+    @PostMapping("/clientes/creditos/cuotas/pagar")
+    ResponseEntity<CuotaResponseDto> marcarCuotaPagada(@RequestBody PagoCreditoRequestDto request);
 
 
 }

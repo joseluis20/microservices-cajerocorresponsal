@@ -26,7 +26,7 @@
       private final ClienteServiceClient clienteServiceClient;
 
 
-        @PostMapping("/deposito")
+        @PostMapping("/credito")
         public ResponseEntity<MessageTransactionResponseDto> create(@Valid @RequestBody TransactionRequestDto transactionDto) {
             try {
                 TransactionResponseDto transactionResponse = transactionService.createTransaction(transactionDto);
