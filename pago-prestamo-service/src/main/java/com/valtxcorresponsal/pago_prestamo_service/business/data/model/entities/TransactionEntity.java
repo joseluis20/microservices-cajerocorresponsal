@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Setter
 @Entity
 @Table(name = "transacciones")
 public class TransactionEntity {
@@ -46,7 +47,11 @@ public class TransactionEntity {
     @Column(name = "trn_nro_operacion", unique = true)
     private Long operationNumber;
 
+    @Column(name = "nro_credito")
+    private String nroCredito;
 
+    @Column(name = "nro_cuota")
+    private Integer nroCuota;
 
 
 
