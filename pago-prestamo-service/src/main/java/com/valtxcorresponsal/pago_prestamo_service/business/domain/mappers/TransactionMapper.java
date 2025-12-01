@@ -12,7 +12,7 @@ public interface TransactionMapper {
 
   TransactionResponseDto toDto(TransactionEntity transactionEntity);
 
-    @Mapping(target = "id", ignore = true)
+    //@Mapping(target = "id", ignore = true)
     TransactionEntity toEntity(TransactionRequestDto transactionDto);
 
 }

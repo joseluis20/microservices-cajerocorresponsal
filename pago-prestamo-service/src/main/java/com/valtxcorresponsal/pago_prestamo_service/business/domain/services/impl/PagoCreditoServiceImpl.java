@@ -20,12 +20,13 @@ public class PagoCreditoServiceImpl {
     //private final CreditoServiceClient creditoServiceClient;
     private final TransactionRepository transactionRepository;
 
-    /************
+
     public PagoCreditoResponseDto pagarCuota(PagoCreditoRequestDto request) {
 
         log.info("Pagando cuota {} del crédito {}", request.nroCuota(), request.codPrest());
 
-
+        return null;
+        /*
         // 1️⃣ Consultar cuota en cliente-service
         CuotaResponseDto cuota = creditoServiceClient
                 .obtenerCuota(request.codPrest(), request.nroCuota())
@@ -68,8 +69,8 @@ public class PagoCreditoServiceImpl {
                 .nroOperacion(nroOperacion)
                 .mensaje("Pago realizado correctamente")
                 .build();
-
+        */
 
     }
-     */
+
 }

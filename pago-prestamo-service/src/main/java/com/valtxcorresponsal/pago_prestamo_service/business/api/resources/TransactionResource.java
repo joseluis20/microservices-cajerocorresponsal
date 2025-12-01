@@ -1,6 +1,4 @@
     package com.valtxcorresponsal.pago_prestamo_service.business.api.resources;
-
-
     import com.valtxcorresponsal.pago_prestamo_service.business.api.dtos.*;
     import com.valtxcorresponsal.pago_prestamo_service.business.api.exceptions.ResourceNotFoundException;
     import com.valtxcorresponsal.pago_prestamo_service.business.consume.ClienteServiceClient;
