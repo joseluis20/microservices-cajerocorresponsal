@@ -63,7 +63,7 @@ public class PagoCreditoServiceImpl {
         // 4️ Registrar transacción local
         TransactionEntity transaction = new TransactionEntity();
         transaction.setTipoOperacion("PAGO DE CUOTA");
-        transaction.setCodPrestamo(request.codPrest());
+        transaction.setNroCredito(request.codPrest());
         transaction.setNroCuota(request.nroCuota());
         transaction.setAmount(cuota.montoCuota());
         transaction.setOperationNumber(nroOperacion);

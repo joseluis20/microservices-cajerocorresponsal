@@ -20,7 +20,7 @@ public class TransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "trn_id")
-    private Long id; //Antes era Integer
+    private Long id;
 
     @Positive(message = "El monto de la transaccion debe ser mayor a cero")
     @Column(name = "trn_monto")
@@ -53,9 +53,11 @@ public class TransactionEntity {
     @Column(name = "trn_nro_operacion", unique = true)
     private Long operationNumber;
 
+    // ➕ Nuevos campos agregados a la tabla:
+    @Column(name = "nro_credito")
+    private String nroCredito;
 
-
-
-
+    @Column(name = "nro_cuota")
+    private Integer nroCuota;
 
 }
