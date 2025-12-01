@@ -2,17 +2,11 @@ package com.valtxcorresponsal.pago_prestamo_service.business.data.model.entities
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Setter
 @Entity
 @Table(name = "transacciones")
 public class TransactionEntity {
@@ -20,7 +14,7 @@ public class TransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "trn_id")
-    private Long id;
+    private Long id; //Antes era Integer
 
     @Positive(message = "El monto de la transaccion debe ser mayor a cero")
     @Column(name = "trn_monto")
@@ -53,11 +47,13 @@ public class TransactionEntity {
     @Column(name = "trn_nro_operacion", unique = true)
     private Long operationNumber;
 
-    // ➕ Nuevos campos agregados a la tabla:
     @Column(name = "nro_credito")
     private String nroCredito;
 
     @Column(name = "nro_cuota")
     private Integer nroCuota;
+
+
+
 
 }

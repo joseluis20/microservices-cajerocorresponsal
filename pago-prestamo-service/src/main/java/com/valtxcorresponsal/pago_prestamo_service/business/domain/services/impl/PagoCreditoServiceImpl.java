@@ -22,8 +22,6 @@ public class PagoCreditoServiceImpl {
     private final CreditoServiceClient creditoServiceClient;
     private final TransactionRepository transactionRepository;
 
-
-
     public PagoCreditoResponseDto pagarCuota(PagoCreditoRequestDto request) {
 
         log.info("Pagando cuota {} del crédito {}", request.nroCuota(), request.codPrest());
