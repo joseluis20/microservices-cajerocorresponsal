@@ -6,13 +6,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Setter
-@Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@Table(name = "transacciones")
+
 public class TransactionEntity {
 
     @Id

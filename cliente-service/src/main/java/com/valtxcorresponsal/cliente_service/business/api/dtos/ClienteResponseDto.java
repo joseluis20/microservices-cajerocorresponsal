@@ -5,6 +5,8 @@ import lombok.Builder;
 @Builder
 public record ClienteResponseDto(
 
+        Long idClient,
+
         Long tipDocCli,
 
         String nroDocument,

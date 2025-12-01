@@ -49,7 +49,7 @@
                                     .statusCode(500)
                                     .results(Collections.emptyList())
                                     .error("Error Interno del Servidor")
-                                    .message("Token incorrecto o expirado")
+                                    .message("Token incorrecto o expirado"+transactionDto.token())
                                     .build()
                     );
                 }

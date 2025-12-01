@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -15,7 +16,7 @@ public class ClientEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cli_id")
-    private Long idClient;
+    private Long id;
 
     @Column(name = "cli_nom")
     private String firstName;
@@ -26,6 +27,9 @@ public class ClientEntity {
     @OneToOne
     @JoinColumn(name = "cli_tip_doc", referencedColumnName = "tip_doc_id")
     private TypeDocumentEntity typeDocument;
+
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CreditoEntity> creditos;
 
     @Column(name = "cli_nro_doc", unique = true, nullable = false)
     private String nroDocument;
