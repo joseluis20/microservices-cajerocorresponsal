@@ -2,11 +2,19 @@ package com.valtxcorresponsal.pago_prestamo_service.business.data.model.entities
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "transacciones")
 public class TransactionEntity {
 
     @Id

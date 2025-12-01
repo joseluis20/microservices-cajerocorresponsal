@@ -1,7 +1,7 @@
-package com.valtxcorresponsal.cliente_service.business.consume;
+package com.valtxcorresponsal.pago_prestamo_service.business.consume;
 
-import com.valtxcorresponsal.cliente_service.business.api.dtos.CuotaResponseDto;
-import com.valtxcorresponsal.cliente_service.business.api.dtos.transaction.PagarCuotaClienteDto;
+import com.valtxcorresponsal.pago_prestamo_service.business.api.dtos.CuotaResponseDto;
+import com.valtxcorresponsal.pago_prestamo_service.business.api.dtos.PagarCuotaClienteDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

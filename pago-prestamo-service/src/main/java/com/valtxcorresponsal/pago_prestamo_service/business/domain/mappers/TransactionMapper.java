@@ -4,7 +4,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import com.valtxcorresponsal.pago_prestamo_service.business.api.dtos.TransactionRequestDto;
 import com.valtxcorresponsal.pago_prestamo_service.business.api.dtos.TransactionResponseDto;
-import com.valtxcorresponsal.pago_prestamo_service.business.data.model.entities.TransactionEntity;
 
 @Mapper(componentModel = "spring")
 public interface TransactionMapper {
