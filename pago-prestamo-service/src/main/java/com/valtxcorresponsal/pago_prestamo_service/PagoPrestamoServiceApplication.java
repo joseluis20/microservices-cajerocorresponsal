@@ -9,10 +9,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication(scanBasePackages = {
-        "com.valtxcorresponsal.pago_prestamo_service.business.domain.services",
-        "com.valtxcorresponsal.pago_prestamo_service.business.consume"
-})
+@SpringBootApplication(
+        scanBasePackages = "com.valtxcorresponsal.pago_prestamo_service"
+)
 @EnableFeignClients(
         basePackages = "com.valtxcorresponsal.pago_prestamo_service.business.consume"
 )

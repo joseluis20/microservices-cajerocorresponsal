@@ -4,9 +4,10 @@ import com.valtxcorresponsal.pago_prestamo_service.business.api.dtos.CuotaRespon
 import com.valtxcorresponsal.pago_prestamo_service.business.api.dtos.PagarCuotaClienteDto;
 import com.valtxcorresponsal.pago_prestamo_service.business.api.dtos.PagoCreditoRequestDto;
 import com.valtxcorresponsal.pago_prestamo_service.business.api.dtos.PagoCreditoResponseDto;
-import com.valtxcorresponsal.pago_prestamo_service.business.consume.CreditoServiceClient;
+import com.valtxcorresponsal.pago_prestamo_service.business.consume.ClienteServiceClient;
 import com.valtxcorresponsal.pago_prestamo_service.business.data.model.entities.TransactionEntity;
 import com.valtxcorresponsal.pago_prestamo_service.business.data.repositories.TransactionRepository;
+import com.valtxcorresponsal.pago_prestamo_service.business.domain.services.PagoCreditoService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,19 +18,19 @@ import java.util.Random;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class PagoCreditoServiceImpl {
+public class PagoCreditoServiceImpl implements PagoCreditoService {
 
-    private final CreditoServiceClient creditoServiceClient;
+    private final ClienteServiceClient clienteServiceClient;
     private final TransactionRepository transactionRepository;
 
     public PagoCreditoResponseDto pagarCuota(PagoCreditoRequestDto request) {
 
-        log.info("Pagando cuota {} del crédito {}", request.nroCuota(), request.codPrest());
+        log.info("Pagando cuota {} del crédito {}", request.nroCuota(), request.nroCredito());
 
 
         // 1️ Consultar cuota en cliente-service
-        CuotaResponseDto cuota = creditoServiceClient
-                .obtenerCuota(request.codPrest(), request.nroCuota())
+        CuotaResponseDto cuota = clienteServiceClient
+                .obtenerCuota(request.nroCredito(), request.nroCuota())
                 .getBody();
 
         if (cuota == null) {
@@ -41,9 +42,9 @@ public class PagoCreditoServiceImpl {
         }
 
         // 2️ Marcar cuota como pagada en cliente-service
-        creditoServiceClient.marcarCuotaPagada(
+        clienteServiceClient.marcarCuotaPagada(
                 PagarCuotaClienteDto.builder()
-                        .codPrest(request.codPrest())
+                        .nroCredito(request.nroCredito())
                         .nroCuota(request.nroCuota())
                         .montoPagado(cuota.montoCuota())   // monto real de la cuota
                         .usuarioActualizacion("SYSTEM")  // o usuario real si lo tienes
@@ -61,7 +62,7 @@ public class PagoCreditoServiceImpl {
         // 4️ Registrar transacción local
         TransactionEntity transaction = new TransactionEntity();
         transaction.setTipoOperacion("PAGO DE CUOTA");
-        transaction.setNroCredito(request.codPrest());
+        transaction.setNroCredito(request.nroCredito());
         transaction.setNroCuota(request.nroCuota());
         transaction.setAmount(cuota.montoCuota());
         transaction.setOperationNumber(nroOperacion);

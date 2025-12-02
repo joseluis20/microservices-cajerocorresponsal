@@ -8,20 +8,13 @@ import lombok.Builder;
 @Builder
 public record TransactionRequestDto(
 
-        @NotNull(message = "El amount es obligatorio")
-        @DecimalMin(value = "0.01", message = "El amount tiene que ser mayor a cero")
-        Double amount,
 
-        @NotNull(message = "El campo agenteId no puede estar vacío")
-        Long agenteId,
+        @NotNull(message = "El campo nroCredito no puede estar vacío")
+        String nroCredito,
 
-        @NotNull(message = "El campo tipDocCli no puede estar vacío")
-        Integer tipDocCli,
+        @NotNull(message = "El campo nroCuota no puede estar vacío")
+        Integer nroCuota
 
-        @NotNull(message = "El campo nroDocCli no puede estar vacío")
-         String nroDocCli,
 
-        @NotNull(message = "El campo  cuentaDestino no puede estar vacío")
-        String cuentaDestino
 ) {
 }

@@ -62,7 +62,7 @@ public class CreditoServiceImpl implements CreditoService {
     // -------------------------------------------------------
     public CuotaResponseDto obtenerCuotaEspecifica(String nroCredito, Integer nroCuota) {
 
-        CuotaEntity cuota = cuotaRepository.findByNroCreditoAndNroCuota(nroCredito, nroCuota)
+        CuotaEntity cuota = cuotaRepository.findByCredito_NroCreditoAndNroCuota(nroCredito, nroCuota)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Cuota no existe para crédito " + nroCredito));
 
@@ -79,7 +79,7 @@ public class CreditoServiceImpl implements CreditoService {
     // -------------------------------------------------------
     public CuotaResponseDto marcarCuotaPagada(String nroCredito, Integer nroCuota) {
 
-        CuotaEntity cuota = cuotaRepository.findByNroCreditoAndNroCuota(nroCredito, nroCuota)
+        CuotaEntity cuota = cuotaRepository.findByCredito_NroCreditoAndNroCuota(nroCredito, nroCuota)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Cuota no existe para crédito " + nroCredito));
 

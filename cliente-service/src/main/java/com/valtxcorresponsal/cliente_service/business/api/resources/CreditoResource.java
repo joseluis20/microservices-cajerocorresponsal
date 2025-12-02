@@ -126,7 +126,7 @@ public class CreditoResource {
     }
 
 
-    @GetMapping("/creditos/{codPrest}/cuotas/{nroCuota}")
+    @GetMapping("/creditos/{nroCredito}/cuotas/{nroCuota}")
     public ResponseEntity<CuotaResponseDto> obtenerCuotaEspecifica(
             @PathVariable String codPrest,
             @PathVariable Integer nroCuota) {

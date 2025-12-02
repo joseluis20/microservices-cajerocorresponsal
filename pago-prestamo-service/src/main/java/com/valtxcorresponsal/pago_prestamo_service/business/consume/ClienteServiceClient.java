@@ -25,13 +25,13 @@ public interface ClienteServiceClient {
     );
 
 
-    @GetMapping("/clientes/creditos/{codPrest}/cuotas/{nroCuota}")
+    @GetMapping("/clientes/creditos/{nroCredito}/cuotas/{nroCuota}")
     ResponseEntity<CuotaResponseDto> obtenerCuota(
-            @PathVariable String codPrest,
+            @PathVariable String nroCredito,
             @PathVariable Integer nroCuota);
 
     @PostMapping("/clientes/creditos/cuotas/pagar")
-    ResponseEntity<CuotaResponseDto> marcarCuotaPagada(@RequestBody PagoCreditoRequestDto request);
+    ResponseEntity<CuotaResponseDto> marcarCuotaPagada(@RequestBody PagarCuotaClienteDto request);
 
 
 }
