@@ -71,12 +71,7 @@ public class CuotaEntity {
     // RELACIÓN: MUCHOS A UNO
     // ---------------------------
     @ManyToOne
-    @JoinColumn(
-            name = "nro_credito",
-            referencedColumnName = "nro_credito",
-            nullable = false,
-            foreignKey = @ForeignKey(name = "fk_cuo_cre")
-    )
+    @JoinColumn(name = "nro_credito", referencedColumnName = "nro_credito")
     private CreditoEntity credito;
 
 

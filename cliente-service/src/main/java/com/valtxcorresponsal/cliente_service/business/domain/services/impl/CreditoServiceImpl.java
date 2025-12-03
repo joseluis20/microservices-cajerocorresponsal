@@ -60,11 +60,11 @@ public class CreditoServiceImpl implements CreditoService {
     // -------------------------------------------------------
     //  Obtener cuota especifica
     // -------------------------------------------------------
-    public CuotaResponseDto obtenerCuotaEspecifica(String codPrest, Integer nroCuota) {
+    public CuotaResponseDto obtenerCuotaEspecifica(String nroCredito, Integer nroCuota) {
 
-        CuotaEntity cuota = cuotaRepository.findByCodPrestAndNroCuota(codPrest, nroCuota)
+        CuotaEntity cuota = cuotaRepository.findByCredito_NroCreditoAndNroCuota(nroCredito, nroCuota)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Cuota no existe para crédito " + codPrest));
+                        new ResourceNotFoundException("Cuota no existe para crédito " + nroCredito));
 
         return CuotaResponseDto.builder()
                 .nroCuota(cuota.getNroCuota())
@@ -77,11 +77,11 @@ public class CreditoServiceImpl implements CreditoService {
     // -------------------------------------------------------
     //   Marcar cuota como pagada
     // -------------------------------------------------------
-    public CuotaResponseDto marcarCuotaPagada(String codPrest, Integer nroCuota) {
+    public CuotaResponseDto marcarCuotaPagada(String nroCredito, Integer nroCuota) {
 
-        CuotaEntity cuota = cuotaRepository.findByCodPrestAndNroCuota(codPrest, nroCuota)
+        CuotaEntity cuota = cuotaRepository.findByCredito_NroCreditoAndNroCuota(nroCredito, nroCuota)
                 .orElseThrow(() ->
-                        new ResourceNotFoundException("Cuota no existe para crédito " + codPrest));
+                        new ResourceNotFoundException("Cuota no existe para crédito " + nroCredito));
 
         if (Boolean.TRUE.equals(cuota.getEstado())) {
             throw new RuntimeException("La cuota ya estaba pagada");

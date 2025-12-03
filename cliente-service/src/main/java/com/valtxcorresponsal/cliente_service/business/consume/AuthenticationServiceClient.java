@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "autenticacion-service", url = "http://localhost:8084")
+@FeignClient(name = "autenticacion-service", url = "http://190.235.196.163:8084")
 public interface AuthenticationServiceClient {
 
     @PostMapping("/api/v1/auth/login")

@@ -8,9 +8,8 @@ import java.util.Optional;
 
 public interface CuotaRepository extends JpaRepository<CuotaEntity, Long> {
 
+    Optional<CuotaEntity> findByCredito_NroCreditoAndNroCuota(String nroCredito, Integer nroCuota);
+
     @Query("SELECT c FROM CuotaEntity c WHERE c.credito.nroCredito = :nroCredito ORDER BY c.nroCuota ASC")
     List<CuotaEntity> findByNroCredito(String nroCredito);
-
-    // Nuevo metodo necesario
-    Optional<CuotaEntity> findByCodPrestAndNroCuota(String codPrest, Integer nroCuota);
 }

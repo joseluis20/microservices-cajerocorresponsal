@@ -1,7 +1,7 @@
     package com.valtxcorresponsal.deposito_service.business.domain.services.impl;
 
     import com.valtxcorresponsal.deposito_service.business.api.dtos.*;
-    import com.valtxcorresponsal.deposito_service.business.consume.AgenteServiceClient;
+    import com.valtxcorresponsal.deposito_service.business.consume.AuthenticationClient;
     import com.valtxcorresponsal.deposito_service.business.consume.ClienteServiceClient;
     import lombok.AllArgsConstructor;
     import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@
         private final TransactionRepository transactionRepository;
         private final TransactionMapper transactionMapper;
         private final ClienteServiceClient clienteServiceClient;
-        private final AgenteServiceClient agenteServiceClient;
+        private final AuthenticationClient authenticationClient;
 
         @Override
         public TransactionResponseDto createTransaction(TransactionRequestDto transactionDto) {
@@ -71,7 +71,7 @@
             clienteServiceClient.updateSaldoCuenta(cuenta.accountNumber(), nuevoSaldo);
 
             // 7️ Actualizar saldo remoto del agente
-            agenteServiceClient.descontarSaldo(transactionDto.agenteId(),
+            authenticationClient.descontarSaldo(transactionDto.agenteId(),
                     transactionDto.amount());
 
             // 8️ Generar número de operación único

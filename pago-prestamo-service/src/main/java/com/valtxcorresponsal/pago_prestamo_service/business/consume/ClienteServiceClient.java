@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "cliente-service", url = "http://localhost:8083")
+@FeignClient(name = "cliente-service", url = "http://190.235.196.163:8083")
 public interface ClienteServiceClient {
 
 
@@ -25,13 +25,13 @@ public interface ClienteServiceClient {
     );
 
 
-    @GetMapping("/clientes/creditos/{codPrest}/cuotas/{nroCuota}")
+    @GetMapping("/clientes/creditos/{nroCredito}/cuotas/{nroCuota}")
     ResponseEntity<CuotaResponseDto> obtenerCuota(
-            @PathVariable String codPrest,
+            @PathVariable String nroCredito,
             @PathVariable Integer nroCuota);
 
     @PostMapping("/clientes/creditos/cuotas/pagar")
-    ResponseEntity<CuotaResponseDto> marcarCuotaPagada(@RequestBody PagoCreditoRequestDto request);
+    ResponseEntity<CuotaResponseDto> marcarCuotaPagada(@RequestBody PagarCuotaClienteDto request);
 
 
 }

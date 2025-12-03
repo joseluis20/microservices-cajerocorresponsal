@@ -1,6 +1,8 @@
-package com.valtxcorresponsal.cliente_service.business.api.dtos.transaction;
+package com.valtxcorresponsal.pago_prestamo_service.business.api.dtos;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+
 
 @Builder
 public record PagarCuotaClienteDto(

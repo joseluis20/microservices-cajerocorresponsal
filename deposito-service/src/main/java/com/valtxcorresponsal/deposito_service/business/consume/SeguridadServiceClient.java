@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "seguridad-service", url = "http://localhost:8082")
+@FeignClient(name = "seguridad-service", url = "http://190.235.196.163:8082")
 public interface SeguridadServiceClient {
 
     @PostMapping("/seguridad/token/enviar")
