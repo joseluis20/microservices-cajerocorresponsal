@@ -128,11 +128,11 @@ public class CreditoResource {
 
     @GetMapping("/creditos/{nroCredito}/cuotas/{nroCuota}")
     public ResponseEntity<CuotaResponseDto> obtenerCuotaEspecifica(
-            @PathVariable String codPrest,
+            @PathVariable String nroCredito,
             @PathVariable Integer nroCuota) {
 
         try {
-            CuotaResponseDto cuota = creditoService.obtenerCuotaEspecifica(codPrest, nroCuota);
+            CuotaResponseDto cuota = creditoService.obtenerCuotaEspecifica(nroCredito, nroCuota);
 
             return ResponseEntity.ok(cuota);
 
@@ -149,7 +149,7 @@ public class CreditoResource {
         try {
 
             CuotaResponseDto cuotaPagada = creditoService.marcarCuotaPagada(
-                    request.codPrest(),
+                    request.nroCredito(),
                     request.nroCuota()
             );
 

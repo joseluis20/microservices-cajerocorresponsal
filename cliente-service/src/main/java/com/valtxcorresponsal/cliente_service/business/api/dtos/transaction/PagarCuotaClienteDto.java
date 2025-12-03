@@ -4,7 +4,7 @@ import lombok.Builder;
 
 @Builder
 public record PagarCuotaClienteDto(
-        String codPrest,      // número de crédito
+        String nroCredito,      // número de crédito
         Integer nroCuota,     // número de la cuota
         Double montoPagado,   // opcional: monto pagado
         String usuarioActualizacion // usuario que realiza la operación
